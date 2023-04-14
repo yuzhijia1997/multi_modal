@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include <ctime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,6 +34,7 @@ void MainWindow::initialize()
     pButtonGroup->addButton(ui->radioButton_pixel, 3);
     pButtonGroup->addButton(ui->radioButton_feature, 4);
     pButtonGroup->addButton(ui->radioButton_score, 5);
+    pButtonGroup->addButton(ui->radioButton_optimal, 6);
 
     connect(pButtonGroup, &QButtonGroup::buttonToggled, this, &::MainWindow::slot_btnGroupToggled);
 
@@ -121,6 +123,7 @@ void MainWindow::set_model(int nId)
         }
         break;
     case 5:
+    case 6:
         score_model->set_model_and_modals({ "resources\\model\\resnet50_face.pt" ,
             "resources\\model\\resnet50_iris.pt" ,"resources\\model\\resnet50_fingerprint.pt" },
             { "face","iris","fingerprint" });
@@ -214,6 +217,7 @@ void MainWindow::on_pushButtond_gallery_clicked()
             gallery_path = path;
             const QString msg = "底库 " + gallery_path + " 加载成功\n";
             ui->textBrowser->insertPlainText(msg);
+            ui->galleryTextBrowser->insertPlainText(gallery_path);
         }
         break;
     case 3:
@@ -228,9 +232,11 @@ void MainWindow::on_pushButtond_gallery_clicked()
             gallery_path = path;
             const QString msg = "底库 " + gallery_path + " 加载成功\n";
             ui->textBrowser->insertPlainText(msg);
+            ui->galleryTextBrowser->insertPlainText(gallery_path);
         }
         break;
     case 5:
+    case 6:
         score_model->set_gallery_dir(path.toStdString());
         if (!score_model->IsExistGallery()) {
             const QString msg = "底库 " + path + " 不存在\n";
@@ -240,6 +246,7 @@ void MainWindow::on_pushButtond_gallery_clicked()
             gallery_path = path;
             const QString msg = "底库 " + gallery_path + " 加载成功\n";
             ui->textBrowser->insertPlainText(msg);
+            ui->galleryTextBrowser->insertPlainText(gallery_path);
         }
         break;
     default:
@@ -251,6 +258,10 @@ void MainWindow::on_pushButtond_gallery_clicked()
 void MainWindow::on_pushButtond_res_clicked()
 {
     int nId = pButtonGroup->checkedId();
+
+    std::clock_t start, end;
+    start = clock();
+    double endtime;
     switch (nId)
     {
     case 0:
@@ -271,6 +282,9 @@ void MainWindow::on_pushButtond_res_clicked()
             scene->addPixmap(QPixmap(QString::fromStdString(results[0][1])).scaled(0.95 * ui->graphicsView_face_g->size()));
             ui->graphicsView_face_g->setScene(scene);
         }
+        end = clock();
+        endtime = (double)(end - start) * 1000 / CLOCKS_PER_SEC;
+        qDebug() << endtime << "ms";
         break;
     case 1:
         if (!iris_path.size())
@@ -290,6 +304,9 @@ void MainWindow::on_pushButtond_res_clicked()
             scene->addPixmap(QPixmap(QString::fromStdString(results[0][1])).scaled(0.95 * ui->graphicsView_iris_g->size()));
             ui->graphicsView_iris_g->setScene(scene);
         }
+        end = clock();
+        endtime = (double)(end - start) * 1000 / CLOCKS_PER_SEC;
+        qDebug() << endtime << "ms";
         break;
     case 2:
         if (!fingerprint_path.size())
@@ -309,6 +326,9 @@ void MainWindow::on_pushButtond_res_clicked()
             scene->addPixmap(QPixmap(QString::fromStdString(results[0][1])).scaled(0.95 * ui->graphicsView_fp_g->size()));
             ui->graphicsView_fp_g->setScene(scene);
         }
+        end = clock();
+        endtime = (double)(end - start) * 1000 / CLOCKS_PER_SEC;
+        qDebug() << endtime << "ms";
         break;
     case 3:
     case 4:
@@ -344,8 +364,12 @@ void MainWindow::on_pushButtond_res_clicked()
             scene3->addPixmap(QPixmap(QString::fromStdString(results[0][3])).scaled(0.95 * ui->graphicsView_fp_g->size()));
             ui->graphicsView_fp_g->setScene(scene3);
         }
+        end = clock();
+        endtime = (double)(end - start) * 1000 / CLOCKS_PER_SEC;
+        qDebug() << endtime << "ms";
         break;
     case 5:
+    case 6:
         if (!face_path.size())
         {
             ui->textBrowser->insertPlainText("人脸图片未选择\n");
@@ -378,6 +402,9 @@ void MainWindow::on_pushButtond_res_clicked()
             scene3->addPixmap(QPixmap(QString::fromStdString(results[0][3])).scaled(0.95 * ui->graphicsView_fp_g->size()));
             ui->graphicsView_fp_g->setScene(scene3);
         }
+        end = clock();
+        endtime = (double)(end - start) * 1000 / CLOCKS_PER_SEC;
+        qDebug() << endtime << "ms";
         break;
     default:
         break;

@@ -58,10 +58,16 @@
     <ClCompile Include="score_model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mymenu.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mymenu.h">
+      <Filter>Generated Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

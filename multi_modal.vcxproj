@@ -199,6 +199,7 @@
     <ClCompile Include="fusion_model.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="mymenu.cpp" />
     <ClCompile Include="score_model.cpp" />
     <ClCompile Include="single_model.cpp" />
   </ItemGroup>
@@ -232,6 +233,7 @@
     <ClInclude Include="base_model.h" />
     <ClInclude Include="face_model.h" />
     <ClInclude Include="fusion_model.h" />
+    <QtMoc Include="mymenu.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="score_model.h" />
     <ClInclude Include="single_model.h" />
